@@ -278,7 +278,9 @@ function renderQuestion() {
           <input type="radio" name="opt" value="${esc(id)}">
           <span class="key">${i + 1}</span>
           <span class="label">${esc(label(id))}</span>
+          ${egg ? '' : '<button type="button" class="tip-btn" aria-label="Статья из справочника">?</button>'}
         </label>`).join('')}
+      ${egg ? '' : '<div class="tip" id="tip" role="tooltip"></div>'}
     </fieldset>
     <div class="actions">
       <button type="button" class="primary" id="submit" disabled>Ответить</button>
@@ -289,7 +291,82 @@ function renderQuestion() {
     input.addEventListener('change', () => pick(input.value));
   }
   $('#submit').addEventListener('click', submit);
+  if (!egg) bindOptionTips(); // у пасхалки варианты не из справочника — показывать нечего
 }
+
+// ---------- Всплывашка со статьёй справочника над вариантом ----------
+
+// На компьютере — по наведению мыши. На телефоне mouseenter срабатывает по тапу
+// и подсказка «залипала» бы, поэтому там вместо наведения кнопка «?» у варианта
+// (она видна только на устройствах без мыши — см. .tip-btn в style.css).
+const CAN_HOVER = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+const TIP_DELAY = 350;    // мс: чтобы подсказки не мелькали, пока мышь едет через список
+const TIP_MIN_WIDTH = 240; // px: уже этого справа от названий не помещаем — кладём под вариант
+let tipTimer = null;
+
+function hideTip() {
+  clearTimeout(tipTimer);
+  const el = $('#tip');
+  if (el) el.classList.remove('show');
+}
+
+// Та же статья, что во вкладке «Справочник»: название, латынь, определение, синонимы.
+function showTip(label) {
+  const f = state.fallacies.get(label.dataset.id);
+  const el = $('#tip');
+  if (!f || !el) return;
+  el.innerHTML = `
+    <b>${esc(f.name)}</b>${f.latin ? ` <i class="latin">${esc(f.latin)}</i>` : ''}
+    <p>${esc(f.definition)}</p>
+    ${(f.aliases || []).length ? `<p class="muted">Также: ${esc(f.aliases.join(', '))}</p>` : ''}`;
+  el.dataset.for = label.dataset.id;
+
+  // Подсказка лежит внутри .options (position: absolute). Названия вариантов
+  // короткие, справа у строк пусто — туда её и ставим, на уровне первого варианта,
+  // чтобы она не закрывала ни одно название. Если места мало (узкий экран) —
+  // под тем вариантом, к которому она относится.
+  const box = el.parentElement.getBoundingClientRect();
+  const labels = [...el.parentElement.querySelectorAll('.option')];
+  const textRight = Math.max(...labels.map((l) => l.querySelector('.label').getBoundingClientRect().right));
+  const left = textRight - box.left + 24;
+  const width = box.width - left - 12;
+  if (width >= TIP_MIN_WIDTH) {
+    el.style.left = `${left}px`;
+    el.style.width = `${width}px`;
+    el.style.top = `${labels[0].offsetTop + 6}px`;
+  } else {
+    el.style.left = '0';
+    el.style.width = '100%';
+    el.style.top = `${label.offsetTop + label.offsetHeight + 6}px`;
+  }
+  el.classList.add('show');
+}
+
+function bindOptionTips() {
+  hideTip();
+  for (const label of document.querySelectorAll('.option')) {
+    if (CAN_HOVER) {
+      label.addEventListener('mouseenter', () => {
+        clearTimeout(tipTimer);
+        tipTimer = setTimeout(() => showTip(label), TIP_DELAY);
+      });
+      label.addEventListener('mouseleave', hideTip);
+    }
+    // «?» — показать/спрятать статью. preventDefault: кнопка внутри <label>,
+    // тап по ней не должен выбирать вариант.
+    label.querySelector('.tip-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const el = $('#tip');
+      if (el.classList.contains('show') && el.dataset.for === label.dataset.id) hideTip();
+      else showTip(label);
+    });
+  }
+}
+// Тап мимо «?» закрывает открытую статью.
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.tip-btn')) hideTip();
+});
 
 function pick(id) {
   const cur = state.current;

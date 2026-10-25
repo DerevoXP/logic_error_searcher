@@ -116,6 +116,27 @@ mark { background: var(--mark); color: inherit; padding: 1px 2px; border-radius:
 .options .option.partial { border-color: var(--warn); background: var(--warn-soft); }
 .option:has(input:disabled) { cursor: default; }
 
+/* Всплывашка со статьёй справочника (js: showTip): справа от названий вариантов,
+   на узком экране — под вариантом. Координаты считаются от .options. */
+.options { position: relative; }
+.tip {
+  position: absolute; z-index: 10; box-sizing: border-box;
+  padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); color: var(--text); font-size: .88rem; line-height: 1.45;
+  box-shadow: 0 6px 20px rgb(0 0 0 / .15);
+  pointer-events: none; visibility: hidden; opacity: 0; transition: opacity .12s;
+}
+.tip.show { visibility: visible; opacity: 1; }
+.tip p { margin: 4px 0 0; }
+
+/* «?» у варианта — только там, где нет мыши (телефон, планшет) */
+.tip-btn {
+  margin-left: auto; flex: none; width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--surface); color: var(--muted);
+  font-weight: 600; line-height: 1; padding: 0;
+}
+@media (hover: hover) and (pointer: fine) { .tip-btn { display: none; } }
+
 .actions { margin-top: 14px; }
 .primary { background: var(--accent); color: var(--surface); border: 0; border-radius: var(--radius); padding: 9px 20px; font-weight: 600; }
 .primary:disabled { opacity: .45; cursor: default; }
