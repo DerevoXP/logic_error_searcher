@@ -37,5 +37,5 @@
 ## Git
 
 В отличие от остальных подпроектов, здесь есть git: `origin` —
-https://github.com/DerevoXP/logic_error_searcher (публичный). `trash/` в `.gitignore`.
+https://github.com/DerevoXP/logic_error_searcher. `trash/` в `.gitignore`.
 Коммит/пуш — только по просьбе Дмитрия.
