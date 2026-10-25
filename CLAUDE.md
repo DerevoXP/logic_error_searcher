@@ -33,3 +33,9 @@
 - Новая пачка: `node scripts/plan-batch.js` → 50 вопросов → `node scripts/validate.js
   --write` → исправить ошибки, показать Дмитрию спорные.
 - Интерфейс проверять в браузере и по file://, и через `npm run serve`.
+
+## Git
+
+В отличие от остальных подпроектов, здесь есть git: `origin` —
+https://github.com/DerevoXP/logic_error_searcher (публичный). `trash/` в `.gitignore`.
+Коммит/пуш — только по просьбе Дмитрия.
