@@ -1,0 +1,157 @@
+:root {
+  --bg: #f6f3ee;
+  --surface: #ffffff;
+  --text: #1f1d1a;
+  --muted: #6d675f;
+  --border: #e2dcd2;
+  --accent: #8a4b14;
+  --accent-soft: #f4e6d6;
+  --ok: #1e7a46;
+  --ok-soft: #e1f3e8;
+  --bad: #b3261e;
+  --bad-soft: #fbe5e3;
+  --mark: #ffe58a;
+  --warn: #9a6b00;
+  --warn-soft: #fbf0d4;
+  --radius: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #171614;
+    --surface: #211f1c;
+    --text: #ece7df;
+    --muted: #a39b90;
+    --border: #3a3631;
+    --accent: #e3a160;
+    --accent-soft: #3a2a1b;
+    --ok: #6fcf97;
+    --ok-soft: #1b3326;
+    --bad: #f2867c;
+    --bad-soft: #3d1f1c;
+    --mark: #6b5310;
+    --warn: #e0b84a;
+    --warn-soft: #3a2f12;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0 auto;
+  max-width: 780px;
+  padding: 16px;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+h1 { font-size: 1.35rem; margin: 0; }
+h2 { font-size: 1rem; margin: 14px 0 8px; }
+h3 { font-size: .9rem; margin: 16px 0 4px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+
+button { font: inherit; cursor: pointer; }
+kbd { border: 1px solid var(--border); border-radius: 4px; padding: 0 5px; font-size: .85em; background: var(--surface); }
+
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.score { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 2px 10px; font-size: .88rem; color: var(--muted); }
+.chip b { color: var(--text); }
+
+.toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.modes { display: inline-flex; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+.mode { border: 0; background: none; color: var(--text); padding: 6px 12px; border-right: 1px solid var(--border); }
+.mode:last-child { border-right: 0; }
+.mode.active { background: var(--accent); color: var(--surface); }
+.mode span { opacity: .75; font-size: .85em; }
+.panels { display: flex; flex-wrap: wrap; gap: 6px; }
+.ghost { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: var(--radius); padding: 6px 12px; }
+.ghost.active { border-color: var(--accent); color: var(--accent); }
+.link { border: 0; background: none; color: var(--accent); padding: 0; text-decoration: underline; font-size: .9rem; }
+
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 4px 16px 16px; margin-bottom: 12px; }
+.panel-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+.back { border: 0; background: none; color: var(--accent); padding: 10px 0 2px; font-weight: 600; }
+.back.bottom { display: block; margin-top: 14px; }
+.groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 4px 16px; }
+.group h4, #glossary h3, #arguing h3 { margin: 10px 0 2px; font-size: .78rem; color: var(--accent); text-transform: uppercase; letter-spacing: .04em; }
+#glossary h3, #arguing h3 { margin-top: 18px; }
+.checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2px 12px; }
+.checks.inline { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.check { display: flex; align-items: center; gap: 6px; padding: 3px 0; }
+.check input { accent-color: var(--accent); }
+.panel > .check { margin-top: 12px; }
+.muted { color: var(--muted); font-size: .85em; }
+
+dl { margin: 0; }
+dt { font-weight: 600; margin-top: 10px; }
+dd { margin: 2px 0 0; color: var(--muted); }
+
+.stats { width: 100%; border-collapse: collapse; font-size: .9rem; margin-bottom: 14px; }
+.stats th, .stats td { text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--border); }
+.stats th { color: var(--muted); font-weight: 500; }
+.danger { border: 1px solid var(--bad); background: none; color: var(--bad); border-radius: var(--radius); padding: 6px 12px; }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px 20px; }
+.meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; font-size: .85rem; color: var(--muted); }
+.dots { letter-spacing: 2px; color: var(--accent); }
+.badge { border: 1px solid var(--border); border-radius: 999px; padding: 0 8px; font-size: .78rem; }
+.badge.warn { border-color: var(--warn); color: var(--warn); cursor: help; }
+
+.text { margin: 12px 0 16px; padding: 12px 16px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 var(--radius) var(--radius) 0; font-size: 1.05rem; }
+mark { background: var(--mark); color: inherit; padding: 1px 2px; border-radius: 3px; }
+
+.options { border: 0; padding: 0; margin: 0; display: grid; gap: 6px; }
+.options legend { font-weight: 600; margin-bottom: 8px; }
+.option { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; }
+.option:hover { border-color: var(--accent); }
+/* Сам кружок радиокнопки не нужен: выбор виден по подсветке строки. Input остаётся для клавиатуры и скринридеров. */
+.option { position: relative; }
+.option input { position: absolute; opacity: 0; pointer-events: none; }
+.option:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+.option .key { font-size: .75rem; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 0 5px; }
+.option:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.options .option.correct { border-color: var(--ok); background: var(--ok-soft); }
+.options .option.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.options .option.partial { border-color: var(--warn); background: var(--warn-soft); }
+.option:has(input:disabled) { cursor: default; }
+
+.actions { margin-top: 14px; }
+.primary { background: var(--accent); color: var(--surface); border: 0; border-radius: var(--radius); padding: 9px 20px; font-weight: 600; }
+.primary:disabled { opacity: .45; cursor: default; }
+
+#feedback:not(:empty) { margin-top: 18px; border-top: 1px solid var(--border); padding-top: 8px; }
+.verdict { font-size: 1.05rem; padding: 8px 12px; border-radius: var(--radius); }
+.verdict.ok { background: var(--ok-soft); color: var(--ok); }
+.verdict.bad { background: var(--bad-soft); color: var(--bad); }
+.verdict.partial { background: var(--warn-soft); color: var(--warn); }
+.latin { color: var(--muted); font-weight: 400; }
+.definition { color: var(--muted); font-style: italic; margin: 8px 0 0; }
+.quote { margin: 0; font-style: italic; }
+#feedback p { margin: 0 0 4px; }
+.note { margin-top: 14px !important; color: var(--warn); font-size: .9rem; }
+
+/* «Как спорить»: общие принципы и советы по типам */
+.prose ul { padding-left: 20px; margin: 4px 0 8px; }
+.prose li { margin: 4px 0; }
+#arguing dd { color: var(--text); }
+#arguing dd p, .counter p { margin: 2px 0 4px; }
+.say { font-style: italic; color: var(--accent); }
+.avoid { color: var(--muted); font-size: .92em; }
+.counter { margin-top: 14px; border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 12px; }
+.counter summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+
+/* Пасхалка: диалог по репликам */
+.text.dialog { white-space: pre-line; font-size: 1rem; }
+.badge.egg { border-color: var(--accent); color: var(--accent); }
+
+.loading, .empty { color: var(--muted); text-align: center; margin: 24px 0; }
+.foot { margin-top: 14px; text-align: center; font-size: .82rem; color: var(--muted); }
+.foot .credits { margin: 6px 0 0; font-size: .75rem; }
+.foot .credits a { color: inherit; }
+
+@media (max-width: 520px) {
+  .card { padding: 14px; }
+  .modes { width: 100%; }
+  .mode { flex: 1; padding: 6px 4px; }
+}

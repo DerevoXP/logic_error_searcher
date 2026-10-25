@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ловец логических ошибок</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="top">
+    <h1>Ловец логических ошибок</h1>
+    <div class="score" aria-live="polite">
+      <span class="chip" title="Верных ответов в этой сессии (частичный зачёт — полбалла)">Сессия: <b id="s-session">0/0</b></span>
+      <span class="chip" title="Верных ответов подряд">Серия: <b id="s-streak">0</b></span>
+      <span class="chip" title="По последним ответам на каждый вопрос">Освоено: <b id="s-mastered">0/0</b></span>
+    </div>
+  </header>
+
+  <nav class="toolbar">
+    <div class="modes" role="radiogroup" aria-label="Режим">
+      <button type="button" class="mode" data-mode="all" role="radio">Все</button>
+      <button type="button" class="mode" data-mode="new" role="radio">Новые <span id="c-new"></span></button>
+      <button type="button" class="mode" data-mode="mistakes" role="radio">Мои ошибки <span id="c-mistakes"></span></button>
+    </div>
+    <div class="panels">
+      <button type="button" class="ghost" data-panel="filters">Фильтры <span id="c-filter"></span></button>
+      <button type="button" class="ghost" data-panel="glossary">Справочник</button>
+      <button type="button" class="ghost" data-panel="arguing">Как спорить</button>
+      <button type="button" class="ghost" data-panel="stats">Статистика</button>
+    </div>
+  </nav>
+
+  <section id="panel-filters" class="panel" hidden>
+    <button type="button" class="back">← Вернуться к вопросам</button>
+    <div class="panel-head">
+      <h2>Типы ошибок</h2>
+      <span>
+        <button type="button" class="link" id="f-all">выбрать все</button> ·
+        <button type="button" class="link" id="f-none">снять все</button>
+      </span>
+    </div>
+    <div id="f-types" class="groups"></div>
+    <h2>Сложность</h2>
+    <div id="f-diff" class="checks inline"></div>
+    <label class="check"><input type="checkbox" id="f-hide-disputed"> Скрывать спорные примеры</label>
+    <button type="button" class="back bottom">← Вернуться к вопросам</button>
+  </section>
+
+  <section id="panel-glossary" class="panel" hidden>
+    <button type="button" class="back">← Вернуться к вопросам</button>
+    <h2>Справочник</h2>
+    <div id="glossary"></div>
+    <button type="button" class="back bottom">← Вернуться к вопросам</button>
+  </section>
+
+  <!-- Общие принципы — статичный текст; советы по типам рендерит app.js из поля counter в fallacies.json. -->
+  <section id="panel-arguing" class="panel prose" hidden>
+    <button type="button" class="back">← Вернуться к вопросам</button>
+    <h2>Итак, мы научились отлавливать чужие ошибки. Что дальше?</h2>
+    <p>Поймать ошибку — полдела. Если собеседник почувствует, что его ловят, он будет защищаться, а не думать.
+      Ниже — сначала общие принципы (они важнее частностей), потом советы по каждому типу.</p>
+
+    <h3>До спора</h3>
+    <ul>
+      <li><b>Реши, зачем тебе этот спор.</b> Понять, кто прав? Договориться, что делать? Не дать соврать при свидетелях?
+        Под каждую цель — своя тактика. Но если цель «доказать, что собеседник дурак», мудрее просто не начинать подобные дискуссии.</li>
+      <li><b>Задай вопрос-фильтр:</b> «А что могло бы тебя переубедить?» Если честный ответ «ничего» — спор можно заканчивать даже не начиная. Это относится и к тебе.</li>
+      <li><b>Публичный спор — не для оппонента.</b> В чате или при коллегах ты убеждаешь зрителей, а не того, кто
+        спорит. Здесь важны спокойный тон и ясность, а не то, за кем последнее слово.</li>
+    </ul>
+
+    <h3>Во время спора</h3>
+    <ul>
+      <li><b>Сначала перескажи его позицию</b> — в сильной, а не карикатурной форме — и получи «да, я это и имел в виду».
+        Человек, которого поняли, слушает гораздо охотнее.</li>
+      <li><b>Не называй ошибку термином.</b> «Это ad hominem» звучит как приговор и включает оборону. Лучше вопрос,
+        после которого собеседник сам увидит дыру.</li>
+      <li><b>Спрашивай, а не утверждай.</b> «Как ты это проверил?», «А что было бы, если…?» Свой вывод человек
+        принимает охотнее, чем твой.</li>
+      <li><b>Одна ошибка за раз.</b> Разбор шести ошибок подряд выглядит как нападение, даже если всё верно.
+        Выбери главную.</li>
+      <li><b>Соглашайся, где можно.</b> «Тут ты прав» стоит дёшево и сильно снижает градус.</li>
+      <li><b>Оставь возможность передумать без потери лица:</b> «Я раньше тоже так думал», «Да, это легко спутать».</li>
+      <li><b>Не воюй с выводом, если не разобрался с доводом.</b> Плохой довод не делает вывод ложным —
+        не попадись в «ошибку ошибки» сам.</li>
+    </ul>
+
+    <h3>Когда пора выйти</h3>
+    <ul>
+      <li>На вопрос «что тебя переубедит?» ответа нет или он «ничего».</li>
+      <li>Опровергнутое возвращается через пять минут как ни в чём не бывало, а тема скачет.</li>
+      <li>Вместо доводов — ярлыки: «зомбирован», «проплачен», «овца».</li>
+      <li>Ты сам уже злишься и хочешь победить, а не понять.</li>
+    </ul>
+    <p>Выйти — не значит проиграть. Можно сказать: «Похоже, мы друг друга не убедим. Давай на этом остановимся».
+      Как говорится, не играйте в шахматы с голубем.</p>
+
+    <p class="muted">Честное примечание: общие принципы опираются на реальные подходы — мотивационное интервьюирование,
+      «уличную эпистемологию», исследования убеждающих бесед. Советы по отдельным ошибкам — скорее здравый смысл
+      и риторическая практика: научно проверенной методики «как отбить ложную дилемму» нет.</p>
+
+    <h2>По типам ошибок</h2>
+    <div id="arguing"></div>
+    <button type="button" class="back bottom">← Вернуться к вопросам</button>
+  </section>
+
+  <section id="panel-stats" class="panel" hidden>
+    <button type="button" class="back">← Вернуться к вопросам</button>
+    <h2>Статистика по типам</h2>
+    <table class="stats">
+      <thead><tr><th>Тип</th><th>Отвечено</th><th>Верно с первого раза</th><th>Сейчас в ошибках</th></tr></thead>
+      <tbody id="stats-body"></tbody>
+    </table>
+    <button type="button" class="danger" id="reset">Сбросить прогресс</button>
+    <button type="button" class="back bottom">← Вернуться к вопросам</button>
+  </section>
+
+  <main id="main">
+    <article class="card" id="card">
+      <p class="loading">Загрузка…</p>
+    </article>
+  </main>
+
+  <footer class="foot">
+    Клавиши: <kbd>1</kbd>–<kbd>5</kbd> — выбор, <kbd>Enter</kbd> — ответить / дальше
+    <p class="credits">© 2026 <a href="https://github.com/DerevoXP/logic_error_searcher">DerevoXP</a> · сделано с помощью Claude Opus 5.5</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

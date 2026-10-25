@@ -1,0 +1,11 @@
+{
+  "name": "logic-error-searcher",
+  "private": true,
+  "description": "Веб-тренажёр по логическим ошибкам",
+  "scripts": {
+    "validate": "node scripts/validate.js",
+    "build": "node scripts/validate.js --write",
+    "plan": "node scripts/plan-batch.js",
+    "serve": "python -m http.server 8000"
+  }
+}
